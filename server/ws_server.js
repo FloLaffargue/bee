@@ -1,7 +1,7 @@
 import { WebSocketServer } from 'ws'
 import { setTemp } from "./http_server.js"
+import { logger } from "./logger.js";
 
-// const {logger} = require('./logger.js')
 // const {webSocketServerPort} = require('./config')
 
 /**
@@ -17,15 +17,16 @@ const wss = new WebSocketServer({
 console.log({subProcess, msg: `Server up on port ${WSS_PORT}`})
 
 wss.on('connection', function connection(ws) {
-  console.log({subProcess, msg: "New connection "})
+
+  logger.info({subProcess, msg: "New connection "})
 
   ws.on('message', function message(buffer) {
 
     const data = buffer.toString()
     setTemp(data)
+    logger.info({subProcess, data, msg: "Request received"})
     // console.log('received: %s', buffer);
     // console.log({subProcess, message, msg: "Request received"})
-    // console.log({subProcess, data, msg: "Request received"})
 
       ws.send(JSON.stringify({
         resp: 'received'
@@ -35,11 +36,11 @@ wss.on('connection', function connection(ws) {
 })
 
 wss.on('open', function open() {
-  console.log({subProcess, msg: "Client connected"})
+  logger.info({subProcess, msg: "Client connected"})
 })
 
 wss.on('close', function close() {
-  console.log({subProcess, msg: "Client disconnected"})
+  logger.info({subProcess, msg: "Client disconnected"})
 })
 
 const broadcast = (data) => {
@@ -47,18 +48,9 @@ const broadcast = (data) => {
     return
   }
 
-  console.log({subProcess, data, msg: `Broadcast data to ${wss.clients.size} clients`})
+  logger.info({subProcess, data, msg: `Broadcast data to ${wss.clients.size} clients`})
 
   wss.clients.forEach((ws) => {
     ws.send(data)
   })
 }
-
-//
-// appendDataScannedCallback((data, meta) => {
-//   broadcast(JSON.stringify({
-//     'type': 'scan',
-//     'payload': data,
-//     'meta': meta
-//   }))
-// })

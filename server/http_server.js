@@ -1,19 +1,19 @@
 import express from 'express'
 import cors from 'cors'
-// import { logger } from './logger.js'
+import { logger } from './logger.js'
 
 let app = express()
+const port = 3000
 
 app.use(cors())
 app.use(express.json());
-app.listen(3000, () => {
-  console.log('Listening on port 3000')
-  // logger.info('Listening...')
+app.listen(port, () => {
+  logger.info('Listening on port ' + port)
 })
 
 let temp = {
-  temp: "18°C",
-  humidity: "20%"
+  temp: "18",
+  humidity: "20"
 }
 
 app.get("/bees", (req, res, next) => {
@@ -40,7 +40,7 @@ app.use((err, req, res, next) => {
     status: 500,
     message: err.message
   })
-  console.log(err.message)
+  logger.error(err.message)
   next()
 })
 
