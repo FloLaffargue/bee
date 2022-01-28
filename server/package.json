@@ -1,0 +1,9 @@
+{
+  "type": "module",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.2",
+    "serialport": "^9.2.8",
+    "ws": "^8.4.2"
+  }
+}
