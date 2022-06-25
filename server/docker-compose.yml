@@ -10,3 +10,8 @@ services:
     volumes:
       - .:/app
     command: node main.js
+    logging:
+      driver: json-file
+      options:
+        max-file: "10"
+        max-size: "10m"
