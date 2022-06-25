@@ -10,7 +10,7 @@ class MySerialPort {
     constructor (config, onDataReceived) {
 
         this.serialPort = new SerialPort(config.port, {
-            baudRate: config.baudRate
+            baudRate: confgig.baudRate
         })
 
         const lineStream = this.serialPort.pipe(new Readline({ delimiter: config.delimiter }))
@@ -22,6 +22,7 @@ class MySerialPort {
     }
 
     write (msg) {
+        console.log('Writing ' + msg)
         this.serialPort.write(msg, function(err) {
             if (err) {
                 return console.log('Error on write: ', err.message)
