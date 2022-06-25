@@ -1,7 +1,7 @@
 // Serial Port
 
-import {MySerialPort} from "./SerialPort";
-import config from "./config";
+import {MySerialPort} from "./SerialPort.js";
+import config from "./config.js";
 
 const sp1 = new MySerialPort(config.serialPort1, function (data) {
 	console.log(data)

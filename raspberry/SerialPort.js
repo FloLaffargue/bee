@@ -1,5 +1,7 @@
-const SerialPort = require('serialport')
-const Readline = require('@serialport/parser-readline')
+// const SerialPort = require('serialport')
+import SerialPort from 'serialport'
+// const Readline = require('@serialport/parser-readline')
+import Readline from '@serialport/parser-readline'
 
 class MySerialPort {
 
