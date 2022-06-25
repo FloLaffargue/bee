@@ -17,7 +17,7 @@ const sp2 = new MySerialPort(config.serialPort2, function (data) {
 	console.log(data)
 	try {
 		data = JSON.parse(data)
-		console.log("Weight is " + data.weight / 100 + " kgs")
+		console.log("Weight is " + data.weight / 1000 + " kgs")
 	} catch (e) {
 		const serialMessages = [
 			{

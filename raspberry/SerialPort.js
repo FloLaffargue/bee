@@ -10,7 +10,7 @@ class MySerialPort {
     constructor (config, onDataReceived) {
 
         this.serialPort = new SerialPort(config.port, {
-            baudRate: confgig.baudRate
+            baudRate: config.baudRate
         })
 
         const lineStream = this.serialPort.pipe(new Readline({ delimiter: config.delimiter }))
