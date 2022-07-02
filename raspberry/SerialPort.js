@@ -19,10 +19,14 @@ class MySerialPort {
             onDataReceived(data)
         })
 
+        // lineStream.on('readable', () => {
+        //     console.log('Data:', this.serialPort.read())
+        // })
+
     }
 
     write (msg) {
-        console.log('Writing ' + msg)
+        console.log('Writing message "' + msg + '"')
         this.serialPort.write(msg, function(err) {
             if (err) {
                 return console.log('Error on write: ', err.message)

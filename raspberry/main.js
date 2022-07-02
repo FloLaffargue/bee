@@ -2,22 +2,40 @@
 
 import {MySerialPort} from "./SerialPort.js";
 import config from "./config.js";
+import {ws} from "./ws_client.js";
+
+let wssData = {
+	humidity: 0,
+	temp: 0,
+	weight: 0
+}
 
 const sp1 = new MySerialPort(config.serialPort1, function (data) {
-	console.log(data)
-	if (typeof data === 'object') {
-		console.log("Temp is " + data.temp)
-		console.log("Humidity is " + data.humidity)
-		data = JSON.parse(data)
-		// ws.send(data)
+	try {
+		const { temp, humidity } = JSON.parse(data)
+		console.log(`Temp : ${temp} °C, Humidity : ${humidity}%`)
+		wssData.temp = temp
+		wssData.humidity = humidity
+	} catch (e) {
+		console.log(e.message)
 	}
 })
 
+setInterval(() => {
+	sp1.write('getData')
+}, 2000)
+
+setInterval(() => {
+	console.log('Sending data ' + JSON.stringify(wssData))
+	ws.send(JSON.stringify(wssData))
+}, 5000)
+
 const sp2 = new MySerialPort(config.serialPort2, function (data) {
-	console.log(data)
+	// console.log(data)
 	try {
-		data = JSON.parse(data)
-		console.log("Weight is " + data.weight / 1000 + " kgs")
+		const { weight } = JSON.parse(data)
+		wssData.weight = weight
+		console.log("Weight is " + weight / 1000 + " kgs")
 	} catch (e) {
 		const serialMessages = [
 			{
@@ -43,21 +61,5 @@ const sp2 = new MySerialPort(config.serialPort2, function (data) {
 		if (find) {
 			find.handler()
 		}
-		// ws.send(data)
 	}
 })
-
-/* lineStream.on('readable', function () {
-  console.log('Data:', port.read())
-}) */
-
-/* setInterval(() => {
-	port.write('getData', function(err) {
-	  if (err) {
-	    return console.log('Error on write: ', err.message)
-	  }
-	})
-
-}, 2000) */
-
-
